@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Article</title>
+    <link rel="stylesheet" href="../element/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+    <div id="app" class="div">
+        <el-card class="box-card">
+            <el-container>
+                <el-aside width="400px" style="border-right: #f2f6fc 1px solid;text-align: center;margin-top: 100px">
+                    <img src="../image/index.gif">
+                </el-aside>
+                <el-main>
+                    <el-form  label-width="100px" style="margin-top: 100px;text-align:center " :model="user" :rules="rules" ref="ruleForm" name="ruleForm">
+                        <el-form-item >
+                            <span style="font-size: 20px;color: #66b1ff"> 准备好了吗？那就登陆吧</span>
+                        </el-form-item>
+                        <el-form-item label="用户名" prop="username">
+                            <el-input style="width: 200px" v-model="user.username"></el-input>
+                        </el-form-item>
+                        <el-form-item label="密码" prop="password">
+                            <el-input style="width: 200px" v-model="user.password"></el-input>
+                        </el-form-item>
+                        <el-form-item  >
+                            <a href="register.html">还没有账号，好可怕，快注册一个吧</a>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" style="width: 200px" @click="login">登陆</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-main>
+            </el-container>
+        </el-card>
+    </div>
+    <script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../vue/vue.js"></script>
+<script src="../element/index.js"></script>
+
+<script>
+    let vue =new Vue({
+        el:'#app',
+        data:{
+            user:{
+                username:'',
+                password:''
+            },
+            rules: {
+                username: [
+                    {required: true, message: '请输入用户名', trigger: 'blur'},
+                    {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+                ],
+                password: [
+                    {required: true, message: '请输入密码', trigger: 'blur'},
+                    {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+                ],
+            }
+        },
+        methods:{
+            login:function () {
+                this.$refs["ruleForm"].validate((valid) => {
+                    if (valid) {
+                        $.ajax({
+                            type:'post',
+                            url:'../user/login',
+                            data:{
+                                username:this.user.username,
+                                password:this.user.password
+                            },
+                            dataType:'json',
+                            success:function (result) {
+                                if(result.success){
+                                    window.location.href="WriteArtice.html"
+                                }else{
+                                    vue.$alert( result.msg,'提示', {
+                                        confirmButtonText: '确定',
+                                    });
+                                }
+                            }
+                        })
+                    } else {
+                        return false;
+                    }
+                });
+            }
+        }
+    })
+</script>
+</body>
+</html>

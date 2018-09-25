@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Article</title>
+    <link rel="stylesheet" href="../element/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+    <div id="app" class="div">
+        <el-card class="box-card">
+            <el-container>
+                <el-aside width="400px" style="border-right: #f2f6fc 1px solid;text-align: center;margin-top: 100px">
+                    <img src="../image/reg.gif" style="width: 300px">
+                </el-aside>
+                <el-main>
+                    <el-form :model="user" :rules="rules" label-width="100px" style="margin-top: 60px" ref="ruleForm" name="ruleForm">
+                        <el-form-item  >
+                           <span style="font-size: 20px;color: #66b1ff"> 立即打开新世界大门</span>
+                        </el-form-item>
+                        <el-form-item label="用户名" prop="username" >
+                            <el-input style="width: 300px" v-model="user.username"></el-input>
+                        </el-form-item>
+                        <el-form-item label="密码" prop="password" >
+                            <el-input style="width: 300px" v-model="user.password" type="password"></el-input>
+                        </el-form-item>
+                        <el-form-item label="重复密码" prop="password1">
+                            <el-input style="width: 300px" v-model="user.password1" type="password"></el-input>
+                        </el-form-item>
+                        <el-form-item label="性别">
+                            <el-radio label="0"  v-model="user.sex">男</el-radio>
+                            <el-radio label="1"  v-model="user.sex">女</el-radio>
+                        </el-form-item>
+                        <el-form-item label="邮箱" prop="email">
+                            <el-input style="width: 300px" v-model="user.email" type="email"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" style="width: 300px" @click="register">立即注册</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-main>
+            </el-container>
+        </el-card>
+    </div>
+    <script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../vue/vue.js"></script>
+<script src="../element/index.js"></script>
+
+<script>
+    let vue =new Vue({
+        el:'#app',
+        data:{
+            user:{
+                username:'',
+                password:'',
+                password1:'',
+                sex:"0",
+                email:'',
+            },
+            rules: {
+                username: [
+                    {required: true, message: '请输入用户名', trigger: 'blur'},
+                    {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+                ],
+                password: [
+                    {required: true, message: '请输入密码', trigger: 'blur'},
+                    {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+                ],
+                password1: [
+                    {required: true, message: '请输入密码', trigger: 'blur'},
+                    {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+                ],
+                email:[
+                    { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+                    { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+                ]
+            }
+        },
+        methods:{
+            register:function () {
+                this.$refs["ruleForm"].validate((valid) => {
+                    if (valid) {
+                        if(this.user.password == this.user.password1){
+                            this.submit();
+                        }else{
+                            this.$alert('密码不一致','提示',  {
+                                confirmButtonText: '确定',
+                            });
+                        }
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            submit:function () {
+                $.ajax({
+                    type:'post',
+                    url:'../user/save',
+                    data:{
+                        username:this.user.username,
+                        password:this.user.password,
+                        sex:this.user.sex,
+                        email:this.user.email,
+                    },
+                    dataType:'json',
+                    success:function (result) {
+                        if(result.success){
+                            window.location.href="ArticelList.html"
+                        }else{
+                            vue.$alert( result.msg,'提示', {
+                                confirmButtonText: '确定',
+                            });
+                        }
+                    }
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

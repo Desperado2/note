@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ArticleDetail</title>
+    <link rel="stylesheet" href="../element/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/articell.css">
+    <link rel="stylesheet" href="../css/articleitem.css">
+    <link rel="stylesheet" href="../css/itemfooter.css">
+    <link rel="stylesheet" href="../css/aside.css">
+</head>
+<body>
+    <div id="app">
+        <el-container style="height: 1000px">
+            <el-aside width="300px">
+                <table cellpadding="0" cellspacing="0" id="CalendarTab" style="width: 300px">
+                    <tr>
+                        <td>
+                            <div id="cal">
+                                <div id="top">
+                                    公元<span></span> 年<span></span> 月  农历
+
+                                    <span></span>年 [ <span></span>年 ]
+                                    <input type="button" value="回到今天" title="点击后跳转回
+
+                                今天" style="padding:0px">
+                                </div>
+                                <ul id="wk">
+                                    <li>一</li>
+                                    <li>二</li>
+                                    <li>三</li>
+                                    <li>四</li>
+                                    <li>五</li>
+                                    <li><b>六</b></li>
+                                    <li><b>日</b></li>
+                                </ul>
+                                <div id="cm"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </el-aside>
+            <el-container>
+                <el-header class="article-header head-img">
+                    <el-row :gutter="20">
+                    <el-col :span="16"><div class="grid-content bg-purple">
+                        <span class="head-text">Note -- 无聊写写，无聊看看</span>
+                    </div></el-col>
+                    <el-col :span="8"><div class="grid-content bg-purple" style="float: right">
+                        <el-card shadow="hover" style="width: 180px;text-align: center">
+                            <a href="#" @click="goGoal">我也写一写</a>
+                        </el-card>
+                    </div></el-col>
+                </el-row>
+                </el-header>
+                <el-header>
+                    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"  background-color="#545c64"
+                             text-color="#fff"
+                             active-text-color="#ffd04b">
+                        <el-menu-item index="1" ><a href="ArticelList.html">首页</a> </el-menu-item>
+                        <el-menu-item index="2"><a href="bigthings.html">项目大事纪</a> </el-menu-item>
+                    </el-menu>
+                </el-header>
+                <el-main class="article-main">
+                    <el-card shadow="hover">
+                        <div v-text="title" style="text-align: left"></div>
+                    </el-card>
+                    <div v-html="content" style="text-align: left"></div>
+                </el-main>
+            </el-container>
+        </el-container>
+    </div>
+    <script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/calendar.js"></script>
+<script src="../vue/vue.js"></script>
+<script src="../element/index.js"></script>
+
+<script>
+    let vue = new Vue({
+        el:'#app',
+        mounted:function () {
+            let a_id = localStorage.getItem("a_id");
+            this.getData(a_id);
+        },
+        data:{
+            content:'',
+            title:'',
+            activeIndex: '1'
+        },
+        methods: {
+            getData:function (id) {
+                $.ajax({
+                    type:'get',
+                    url:'../article/detail/'+id,
+                    data:{},
+                    dataType:'json',
+                    success:function (result) {
+                        if(result.success){
+                            vue.content = result.data.content;
+                            vue.title = result.data.title;
+                        }else{
+                            this.$alert('提示', result.msg, {
+                                confirmButtonText: '确定',
+                            });
+                        }
+                    }
+                })
+            },
+            goGoal:function () {
+                $.ajax({
+                    type:'get',
+                    url:'../user/validLogin',
+                    data:{},
+                    dataType:'json',
+                    success:function (result) {
+                        if(result){
+                            window.location.href=  "WriteArtice.html"
+
+                        }else{
+                            window.location.href= "login.html"
+                        }
+                    }
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

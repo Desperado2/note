@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>BigNews</title>
+    <link rel="stylesheet" href="../element/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/articell.css">
+    <link rel="stylesheet" href="../css/aside.css">
+    <link href="../udeitor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+    <el-container style="height: 1000px">
+        <el-aside width="300px">
+            <table cellpadding="0" cellspacing="0" id="CalendarTab" style="width: 300px">
+                <tr>
+                    <td>
+                        <div id="cal">
+                            <div id="top">
+                                公元<span></span> 年<span></span> 月  农历
+
+                                <span></span>年 [ <span></span>年 ]
+                                <input type="button" value="回到今天" title="点击后跳转回
+
+                                今天" style="padding:0px">
+                            </div>
+                            <ul id="wk">
+                                <li>一</li>
+                                <li>二</li>
+                                <li>三</li>
+                                <li>四</li>
+                                <li>五</li>
+                                <li><b>六</b></li>
+                                <li><b>日</b></li>
+                            </ul>
+                            <div id="cm"></div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </el-aside>
+        <el-container>
+            <el-header class="article-header head-img">
+                <span class="head-text">Note -- 无聊写写，无聊看看</span>
+            </el-header>
+            <el-header>
+                <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"  background-color="#545c64"
+                         text-color="#fff"
+                         active-text-color="#ffd04b">
+                    <el-menu-item index="1" ><a href="ArticelList.html">首页</a> </el-menu-item>
+                    <el-menu-item index="2"><a href="bigthings.html">项目大事纪</a> </el-menu-item>
+                </el-menu>
+            </el-header>
+            <el-main >
+                <div style="height:200px;margin-left: 50px">
+                    <el-steps direction="vertical" :active="1">
+                        <el-step title="2018.09.23 项目开始开发" description="
+                            2018.09.23 大晚上突然心血来潮，想要试一试，然后就准备写这么一个东西。
+                        "></el-step>
+                        <el-step title="2018.09.25 项目1.0版本上线"
+                                 description="2018.09.25 经过三年他的努力，1.0版本今天正式上线了。"
+                        ></el-step>
+                    </el-steps>
+                </div>
+            </el-main>
+        </el-container>
+    </el-container>
+</div>
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/calendar.js"></script>
+<script src="../vue/vue.js"></script>
+<script src="../element/index.js"></script>
+
+<script>
+    let vue =new Vue({
+        el:'#app',
+        mounted:function () {
+
+        },
+        data:{
+            activeIndex: '2'
+        },
+        methods:{
+
+        }
+    })
+</script>
+</body>
+</html>

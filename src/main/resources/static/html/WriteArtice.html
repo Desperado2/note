@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>ArticleDetail</title>
+    <link rel="stylesheet" href="../element/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/articell.css">
+    <link rel="stylesheet" href="../css/aside.css">
+    <link href="../udeitor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <el-container style="height: 1000px">
+            <el-aside width="300px">
+                <table cellpadding="0" cellspacing="0" id="CalendarTab" style="width: 300px">
+                    <tr>
+                        <td>
+                            <div id="cal">
+                                <div id="top">
+                                    公元<span></span> 年<span></span> 月  农历
+
+                                    <span></span>年 [ <span></span>年 ]
+                                    <input type="button" value="回到今天" title="点击后跳转回
+
+                                今天" style="padding:0px">
+                                </div>
+                                <ul id="wk">
+                                    <li>一</li>
+                                    <li>二</li>
+                                    <li>三</li>
+                                    <li>四</li>
+                                    <li>五</li>
+                                    <li><b>六</b></li>
+                                    <li><b>日</b></li>
+                                </ul>
+                                <div id="cm"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </el-aside>
+            <el-container>
+                <el-header class="article-header head-img">
+                    <span class="head-text">Note -- 无聊写写，无聊看看</span>
+                </el-header>
+                <el-header>
+                    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"  background-color="#545c64"
+                             text-color="#fff"
+                             active-text-color="#ffd04b">
+                        <el-menu-item index="1" ><a href="ArticelList.html">首页</a> </el-menu-item>
+                        <el-menu-item index="2"><a href="bigthings.html">项目大事纪</a> </el-menu-item>
+                    </el-menu>
+                </el-header>
+                <el-main >
+                    <div style="margin-left: 10px;margin-bottom: 10px;background-color: #1e88e5">请君泼墨挥毫</div>
+                    <el-form  label-width="80px">
+                        <el-form-item label="文章标题">
+                            <el-input v-model="title"></el-input>
+                        </el-form-item>
+                        <el-form-item label="文章内容">
+                           <div id="myEditor"></div>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="save">立即创建</el-button>
+                            <el-button @click="cancel">取消</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-main>
+            </el-container>
+        </el-container>
+    </div>
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/calendar.js"></script>
+<script src="../vue/vue.js"></script>
+<script src="../element/index.js"></script>
+<script type="text/javascript" charset="UTF-8" src="../udeitor/umeditor.config.js"></script>
+<script type="text/javascript" charset="UTF-8" src="../udeitor/umeditor.min.js"></script>
+
+<script>
+    let vue =new Vue({
+        el:'#app',
+        mounted:function () {
+            this.um = UM.getEditor('myEditor');
+        },
+        data:{
+            um:'',
+            title:'',
+            activeIndex: '1'
+        },
+        methods:{
+            save:function () {
+                $.ajax({
+                    type:'post',
+                    url:'../article/save',
+                    data:{
+                        title:this.title,
+                        content:this.um.getContent()
+                    },
+                    dataType:'json',
+                    success:function (result) {
+                        if(result.success){
+                            window.location.href="ArticelList.html"
+                        }else{
+                            vue.$alert(result.msg,'提示',  {
+                                confirmButtonText: '确定',
+                            });
+                        }
+                    }
+                })
+            },
+            cancel:function () {
+                window.location.href="ArticelList.html"
+            }
+        }
+    })
+</script>
+</body>
+</html>

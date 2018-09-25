@@ -1,0 +1,34 @@
+
+.article-header {
+    background-color: #B3C0D1;
+    color: #333;
+    text-align: left;
+    line-height: 80px;
+    padding: 0 0;
+    height: 80px !important;
+}
+
+.el-aside {
+    background-color: #D3DCE6;
+    color: #333;
+    text-align: center;
+    line-height: 700px;
+}
+
+.article-main {
+    background-color: #E9EEF3;
+    color: #333;
+    text-align: center;
+}
+
+.head-img{
+    background-repeat: initial;
+    background-image: url("../image/head.jpg");
+}
+.head-text{
+    margin-left: 20px;
+     font-size: 40px;
+     font-family: 隶书;
+     color: black;
+
+}

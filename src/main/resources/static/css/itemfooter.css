@@ -1,0 +1,40 @@
+.el-row {
+    margin-bottom: 20px;
+}
+el-row:last-child {
+     margin-bottom: 0;
+ }
+
+.el-col {
+    border-radius: 4px;
+}
+
+.grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+}
+.row-bg {
+    padding: 0 0;
+}
+
+.footer-right{
+    text-align:right;
+    line-height: 40px
+}
+
+.footer-right1{
+    height: 80px;
+    text-align:right;
+    line-height: 80px;
+}
+
+
+
+.footer-img{
+    width: 20px;
+    height: 20px;
+    margin-left: 40px;
+}
+.footer-img-text1{
+    margin-right:40px;
+}

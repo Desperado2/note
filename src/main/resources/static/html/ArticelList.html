@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Article</title>
+    <link rel="stylesheet" href="../element/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/articell.css">
+    <link rel="stylesheet" href="../css/articleitem.css">
+    <link rel="stylesheet" href="../css/itemfooter.css">
+    <link rel="stylesheet" href="../css/aside.css">
+</head>
+<body>
+    <div id="app">
+        <el-container style="height: 900px">
+            <el-aside width="300px">
+                <table cellpadding="0" cellspacing="0" id="CalendarTab" style="width: 300px">
+                    <tr>
+                        <td>
+                            <div id="cal">
+                                <div id="top">
+                                    公元<span></span> 年<span></span> 月  农历
+
+                                    <span></span>年 [ <span></span>年 ]
+                                    <input type="button" value="回到今天" title="点击后跳转回
+
+                                今天" style="padding:0px">
+                                </div>
+                                <ul id="wk">
+                                    <li>一</li>
+                                    <li>二</li>
+                                    <li>三</li>
+                                    <li>四</li>
+                                    <li>五</li>
+                                    <li><b>六</b></li>
+                                    <li><b>日</b></li>
+                                </ul>
+                                <div id="cm"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </el-aside>
+            <el-container>
+                <el-header class="article-header head-img">
+                    <el-row :gutter="20">
+                        <el-col :span="16"><div class="grid-content bg-purple">
+                            <span class="head-text">Note -- 无聊写写，无聊看看</span>
+                        </div></el-col>
+                        <el-col :span="8"><div class="grid-content bg-purple" style="float: right">
+                            <el-card shadow="hover" style="width: 180px;text-align: center">
+                                <a href="#" @click="goGoal">我也写一写</a>
+                            </el-card>
+                        </div></el-col>
+                    </el-row>
+                </el-header>
+                <el-header>
+                    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"  background-color="#545c64"
+                             text-color="#fff"
+                             active-text-color="#ffd04b">
+                        <el-menu-item index="1" ><a href="ArticelList.html">首页</a> </el-menu-item>
+                        <el-menu-item index="2"><a href="bigthings.html">项目大事纪</a> </el-menu-item>
+                    </el-menu>
+                </el-header>
+                <el-main class="article-main">
+                    <el-card class="box-card" v-for="article in articles" v-if="articles != ''">
+                        <el-container>
+                            <el-header class="item-head" >
+                                <a href="#" @click="goDetail(article.id)"><div v-text="article.title"></div></a>
+                            </el-header>
+                            <el-main class="item-main">  <div v-text="article.content"></div></el-main>
+                            <el-footer class="item-footer">
+                                <el-row>
+                                    <el-col :span="12"><div class="grid-content footer-left">
+                                        <span class="footer-img-text1" v-text="'发布时间 '+formatD(article.createDate)"></span>
+                                        <span class="footer-img-text" v-text="'作者 '+article.authorId"></span>
+                                    </div></el-col>
+                                    <el-col :span="12"><div class="grid-content footer-right">
+                                        <img class="footer-img" src="../image/like-icon.png"/><span v-text="'点赞 '+article.liked"></span>
+                                        <img class="footer-img" src="../image/commit-icon.png"/><span v-text="'阅读 '+article.readed"></span>
+                                        <img class="footer-img" src="../image/read-icon.png"/><span v-text="'评论 '+article.commited"></span>
+                                    </div></el-col>
+                                </el-row>
+                            </el-footer>
+                        </el-container>
+                    </el-card>
+
+                    <el-pagination
+                            background
+                            @current-change="handleCurrentChange"
+                            layout="prev, pager, next"
+                            :total="count">
+                    </el-pagination>
+                </el-main>
+            </el-container>
+        </el-container>
+    </div>
+    <script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/calendar.js"></script>
+<script src="../vue/vue.js"></script>
+<script src="../element/index.js"></script>
+
+<script>
+    let vue =new Vue({
+        el:'#app',
+        mounted:function () {
+            this.getData();
+        },
+        data:{
+            articles:'',
+            page:1,
+            count:0,
+            activeIndex: '1'
+        },
+        methods:{
+            getData:function () {
+                $.ajax({
+                    type:'get',
+                    url:'../article/list/'+this.page,
+                    data:{},
+                    dataType:'json',
+                    success:function (result) {
+                        if(result.success){
+                            console.log(eval(result.data))
+                            vue.articles = result.data.articles;
+                            vue.count = eval(result.data).count;
+                        }else{
+                            vue.$alert(result.msg,'提示', {
+                                confirmButtonText: '确定',
+                            });
+                        }
+                    }
+                })
+            },
+            formatD:function (data) {
+                if(data != null && data != ''){
+                    var date = new Date(data);
+                    var year = date.getFullYear();
+                    var month = (date.getMonth()+1) >9 ?(date.getMonth()+1):"0"+(date.getMonth()+1);
+                    var day = date.getDay();
+                    var hour = date.getHours();
+                    var munite = date.getMinutes();
+                    var second = date.getSeconds();
+                    return year+"-"+month+"-"+day+" "+hour+":"+munite+":"+second;
+                }
+                return data;
+            },
+            handleCurrentChange(val) {
+               this.page = val;
+            },
+            goGoal:function () {
+                $.ajax({
+                    type:'get',
+                    url:'../user/validLogin',
+                    data:{},
+                    dataType:'json',
+                    success:function (result) {
+                        if(result){
+                            window.location.href= "WriteArtice.html"
+                        }else{
+                            window.location.href= "login.html"
+                        }
+                    }
+                })
+            },
+            goDetail:function (id) {
+                localStorage.setItem("a_id",id);  //以字符串格式存储信息
+                window.location.href="Articedetail.html"
+            }
+        }
+    })
+</script>
+</body>
+</html>

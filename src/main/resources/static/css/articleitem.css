@@ -1,0 +1,30 @@
+.el-card__body{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.item-head{
+    height: 40px !important;
+    text-align: left;
+    line-height: 40px;
+    border-bottom: #f0f0f0 1px solid;
+    font-size: 20px;
+}
+
+.item-main{
+    height: 80px ;
+    text-align: left;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+    border-bottom:  1px solid #f0f0f0;
+    font-size: 14px;
+    text-overflow: ellipsis;
+}
+
+.item-footer{
+    height: 40px !important;
+    text-align: left;
+    line-height: 40px;
+
+}
